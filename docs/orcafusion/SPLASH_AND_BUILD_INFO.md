@@ -18,6 +18,7 @@ Use the **actual uploaded OrcaFusion artwork**, never a generic or AI-search sub
 5. Teal progress track and real progress percentage; progress is not a decorative animation or hardcoded fake value.
 6. Below the progress bar, dynamic initialization messages sourced from actual app startup phases (e.g. Loading configuration, Loading printer profiles, Initializing interface). No fixed timer or artificial wait.
 7. When the startup process is ready, close the splash automatically and show OrcaFusion.
+8. **Animated glow**: subtle pulsing teal glow around the splash-only orca emblem and wordmark, ~2.5 seconds per cycle. Animate the glow opacity/intensity rather than zooming the logo; keep text crisp, progress based on real stages, and loading labels static/readable. Use efficient timed UI refreshes only while splash is visible; cap refresh frequency and stop immediately when it closes. Respect reduced-motion preference (where supported), offer an option to disable animation, and show static glow on lower-resource/Lite installations. Never delay startup for the animation.
 
 ### Asset separation
 - `resources/orcafusion/branding/orcafusion-splash-background.png`: future text-free background resembling the approved preview; no text or progress bar baked in.
