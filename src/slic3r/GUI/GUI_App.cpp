@@ -110,7 +110,6 @@
 #include <wx/snglinst.h>
 #include <wx/image.h>
 #include <wx/graphics.h>
-#include <wx/timer.h>
 #include <wx/settings.h>
 #include <wx/font.h>
 #include <wx/platinfo.h>
@@ -491,7 +490,7 @@ public:
         const wxSize sz = m_window->GetClientSize();
         // A dedicated, text-free splash background can be supplied later without
         // changing the layout. Keep build info and progress drawn as live UI.
-        const wxString branding_dir = wxString::FromUTF8(Slic3r::resources_dir()) +
+        const wxString branding_dir = from_u8(Slic3r::resources_dir()) +
                                       "/orcafusion/branding/";
         const wxString background_path = branding_dir + "orcafusion-splash-background.png";
         wxImage bg_image(background_path, wxBITMAP_TYPE_PNG);
@@ -667,7 +666,7 @@ private:
     // Build-time version; stable builds show only Version X.Y.Z.
     wxString m_text_version = "Version " + wxString::FromUTF8(SoftFever_VERSION);
     bool     m_show_commit  = std::string(SoftFever_VERSION).find('-') != std::string::npos;
-    wxString m_text_build   = "Commit " + wxString::FromUTF8(build_commit_hash);
+    wxString m_text_build   = "Commit " + wxString::FromUTF8(build_commit_hash).Left(7);
     wxString m_text_action  = _L("Loading configuration") + dots;
     int      m_progress     = 0;
     int      m_progress_h   = 6;
