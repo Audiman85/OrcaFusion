@@ -1,9 +1,33 @@
 # OrcaFusion — first Windows test build
 
+## First real build results — November 14, 2026
+
+**GitHub Actions run:** [Build all #43601931230](https://github.com/Audiman85/OrcaFusion/actions/runs/43601931230)  
+**Source revision:** `8ea8f61c8081d174b31625bbc47cc4f4780ee0f5`  
+**Overall workflow conclusion:** `failure` (does **not** mean Windows x64 failed).
+
+Verified job results from GitHub:
+- **Build Windows x64 / Build OrcaSlicer: SUCCESS.**
+- Windows x64 installer creation, Windows x64 ZIP upload, portable upload and MSIX upload steps: **SUCCESS**.
+- Windows x64 unit tests: **SUCCESS**.
+- Windows ARM64 build and unit tests: **SUCCESS**.
+- Linux x86_64 and aarch64 builds/tests: **SUCCESS**.
+- macOS x86_64 and arm64 build jobs: **CANCELLED**; downstream macOS universal build was skipped. The cancelled job logs were not retrievable through the available API, so the reason for the overall red conclusion is **not verified**.
+- No job in the 50-job summary returned conclusion `failure`.
+
+Relevant downloadable artifacts on the workflow-run page (all are still labeled upstream `OrcaSlicer`, version `2.6.0-dev`):
+- `OrcaSlicer_Windows_V2.6.0-dev_x64_portable` (artifact ID `14120712098`, ~203 MB compressed)
+- `OrcaSlicer_Windows_V2.6.0-dev_x64` (artifact ID `14120826767`, ~160 MB compressed)
+- `OrcaSlicer_Windows_MSIX_V2.6.0-dev_x64` (artifact ID `14120906042`, ~204 MB compressed)
+
+**For the first Windows test**, download the **x64 portable** artifact from the run summary, extract it completely and start the bundled app executable. Avoid ARM64 packages on the Ryzen 5 4500U (x86-64). Keep existing OrcaSlicer installation and profiles safe; this development fork retains some upstream application identity/profile paths and can potentially share configuration directories. Back up profiles or test on a separate Windows user before launching. Windows SmartScreen or other security dialogs may appear for untrusted/unsigned development artifacts; do not bypass them without independently verifying the artifact provenance.
+
+**Important:** Successful compilation is not confirmation of correct real-world appearance. The approved first glowing splash logo layers are not yet packaged, and this build may show the fallback logo and an early halo implementation rather than the final visual. Do not consider branded UX, Lite installer or printer connectivity complete.
+
 ## Status (2026-11-14)
 The existing upstream workflow `.github/workflows/build_all.yml` already supports both **push** and **workflow_dispatch**. Its Windows matrix builds x64 (and, on a normal main-branch push, ARM64), using the reusable workflows `build_check_cache.yml` and `build_orca.yml`.
 
-The GitHub repository Actions runs endpoint returned **zero workflow runs** when inspected on 2026-11-14. **No Windows binary or validated installer is currently available.** This can occur when Actions has not been enabled or no runs were created; inspect repository Settings → Actions before concluding the cause.
+Historical note: before enabling Actions, the repository reported zero workflow runs. The first manual build above has since completed and produced Windows x64 artifacts; hands-on execution/visual validation is still outstanding.
 
 ## How to start the first build from GitHub
 1. Open [Actions](https://github.com/Audiman85/OrcaFusion/actions) and check whether repository Actions are enabled. If disabled, enable the appropriate actions in Settings → Actions → General.
