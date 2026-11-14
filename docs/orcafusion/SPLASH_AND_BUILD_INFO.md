@@ -11,6 +11,17 @@ Use the first preview with the **wide horizontal OrcaFusion wordmark**, bright c
 
 **Asset status:** The first preview is approved as visual reference, but the isolated original glowing logo and background have **not yet** been committed as usable separate splash PNG assets. Extract/redraw from that exact first preview before integration, and verify the resulting art matches it; do not claim final asset integration is complete.
 
+## Dark-background orca visibility correction (November 14, 2026)
+
+First desktop test feedback: the remaining upstream `OrcaSlicer` logo showed an orca too dark for a dark background. Dark-only SVG fixes have been committed for:
+- `resources/images/splash_logo_dark.svg`
+- `resources/images/OrcaSlicer_horizontal_dark.svg`
+- `resources/images/OrcaSlicer_about_dark.svg`
+
+The near-black orca fills have been replaced with high-contrast whites, with the eye contrast and icon tile adapted for dark mode. The teal logo accents and light-theme SVGs remain unchanged. **This is a targeted correction to visible upstream/fallback branding, not replacement of the locked FIRST glowing OrcaFusion splash design.**
+
+A new Windows build is required before these revised SVGs can be tested. Existing downloaded portable builds **will not update themselves**. The currently implemented OrcaFusion splash renderer separately loads `resources/orcafusion/branding/orcafusion-logo.png` until the approved isolated splash-only assets are packaged; do not misrepresent this SVG fix as completion of the final OrcaFusion splash.
+
 ## Approved branding
 
 The **first** dramatic dark-teal/glowing logo preview is the **final selected design for the splash screen only**. The second, smoother-animation preview's modified logo is not approved. Preserve the previous standalone orca avatar for app/window/taskbar icons and the existing full logo for ordinary branding. The splash-only artwork is not yet uploaded as isolated, text-free layers. The generated preview has baked-in version/loading/progress text and must **not** be used directly behind live UI because that would duplicate information.
