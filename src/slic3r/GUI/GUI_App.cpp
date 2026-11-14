@@ -452,7 +452,7 @@ public:
         // is shown. The previous 1500 ms auto-timeout closed the splash long
         // before init finished, leaving the user staring at a frozen blank
         // screen during the slow load_presets / new MainFrame phases.
-        : wxSplashScreen(wxBitmap(FromDIP(wxSize(480,480),nullptr)), wxSPLASH_CENTRE_ON_SCREEN, 0, nullptr, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+        : wxSplashScreen(wxBitmap(FromDIP(wxSize(720,405),nullptr)), wxSPLASH_CENTRE_ON_SCREEN, 0, nullptr, wxID_ANY, wxDefaultPosition, wxDefaultSize,
 #ifdef __APPLE__
             wxBORDER_NONE | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP
 #else
@@ -477,17 +477,39 @@ public:
         this->SetPosition(pos);
         this->CenterOnScreen();
 
-        scale_font(m_font_version, 1.65f); // only scale this one since it hasnt a preloaded font like Label::Body_24;
+        scale_font(m_font_version, 1.45f); // OrcaFusion: legible version text on the widescreen splash.
 
-        m_bg_color = StateColor::darkModeColorFor(wxColour("#FFFFFF"));
-        m_fg_color = StateColor::darkModeColorFor(wxColour("#6B6A6A"));
-        m_progress_bg_color = StateColor::darkModeColorFor(wxColour("#DFDFDF"));
-        m_progress_fg_color = StateColor::darkModeColorFor(wxColour("#009688"));
+        // OrcaFusion splash: do not depend on the operating-system color mode.
+        // The approved splash is dark teal for every application theme.
+        m_bg_color = wxColour("#071117");
+        m_fg_color = wxColour("#EAF5F5");
+        m_progress_bg_color = wxColour("#334750");
+        m_progress_fg_color = wxColour("#20D9C6");
         m_progress_h = FromDIP(6);
-        bool dark_mode = m_fg_color != wxColour("#6B6A6A");
-        wxSize sz  = m_window->GetClientSize();
-        BitmapCache bmp_cache;
-        m_logo_bmp = *bmp_cache.load_svg(dark_mode ? "splash_logo_dark" : "splash_logo", sz.GetWidth(), sz.GetHeight());
+        const wxSize sz = m_window->GetClientSize();
+        // A dedicated, text-free splash background can be supplied later without
+        // changing the layout. Keep build info and progress drawn as live UI.
+        const wxString branding_dir = wxString::FromUTF8(Slic3r::resources_dir()) +
+                                      "/orcafusion/branding/";
+        const wxString background_path = branding_dir + "orcafusion-splash-background.png";
+        wxImage bg_image(background_path, wxBITMAP_TYPE_PNG);
+        if (bg_image.IsOk())
+            m_background_bmp = wxBitmap(bg_image.Scale(sz.GetWidth(), sz.GetHeight(), wxIMAGE_QUALITY_HIGH));
+        // The splash-only emblem is optional; use the approved application logo
+        // as fallback. Never display an unrelated or generated replacement.
+        wxImage logo_image(branding_dir + "orcafusion-splash-logo.png", wxBITMAP_TYPE_PNG);
+        if (!logo_image.IsOk())
+            logo_image.LoadFile(branding_dir + "orcafusion-logo.png", wxBITMAP_TYPE_PNG);
+        if (logo_image.IsOk()) {
+            const double max_width  = sz.GetWidth() * 0.80;
+            const double max_height = sz.GetHeight() * 0.53;
+            const double scale = std::min(max_width / logo_image.GetWidth(),
+                                          max_height / logo_image.GetHeight());
+            m_logo_bmp = wxBitmap(logo_image.Scale(
+                std::max(1, static_cast<int>(logo_image.GetWidth() * scale)),
+                std::max(1, static_cast<int>(logo_image.GetHeight() * scale)),
+                wxIMAGE_QUALITY_HIGH));
+        }
 
         m_window->Bind(wxEVT_PAINT, &SplashScreen::OnPaint, this);
         m_window->Refresh();
@@ -501,23 +523,42 @@ public:
 
         dc.SetBackground(wxBrush(m_bg_color));
         dc.Clear();
-        if (m_logo_bmp.IsOk())
-            dc.DrawBitmap(m_logo_bmp, 0, 0, true);
+        if (m_background_bmp.IsOk())
+            dc.DrawBitmap(m_background_bmp, 0, 0, true);
+        if (m_logo_bmp.IsOk()) {
+            const int x = (c_sz.GetWidth() - m_logo_bmp.GetWidth()) / 2;
+            const int y = static_cast<int>(c_sz.GetHeight() * 0.08);
+            dc.DrawBitmap(m_logo_bmp, x, y, true);
+        } else {
+            dc.SetFont(m_font_version);
+            dc.SetTextForeground(m_fg_color);
+            dc.DrawLabel("OrcaFusion", wxRect(0, 0, c_sz.GetWidth(),
+                         static_cast<int>(c_sz.GetHeight() * 0.55)), wxALIGN_CENTER);
+        }
 
         wxRect rc = wxRect(0, 0, c_sz.GetWidth(), 0);
         dc.SetTextForeground(m_fg_color);
 
         dc.SetFont(m_font_version);
-        rc.y      = c_sz.GetHeight() * 0.72;
+        rc.y      = static_cast<int>(c_sz.GetHeight() * 0.65);
         rc.height = dc.GetTextExtent(m_text_version).GetHeight();
         dc.DrawLabel(m_text_version, rc, wxALIGN_CENTER);
 
+        // Short source commit is visible on development/beta builds only.
+        if (m_show_commit) {
+            dc.SetFont(m_font_action);
+            rc.y = static_cast<int>(c_sz.GetHeight() * 0.73);
+            rc.height = dc.GetTextExtent(m_text_build).GetHeight();
+            dc.DrawLabel(m_text_build, rc, wxALIGN_CENTER);
+        }
+
+        const wxRect progress_rc(static_cast<int>(c_sz.GetWidth() * 0.12),
+                                 static_cast<int>(c_sz.GetHeight() * 0.83),
+                                 static_cast<int>(c_sz.GetWidth() * 0.76), m_progress_h);
         dc.SetFont(m_font_action);
-        rc.y      = c_sz.GetHeight() * 0.85;
+        rc.y      = static_cast<int>(c_sz.GetHeight() * 0.89);
         rc.height = dc.GetTextExtent(m_text_action).GetHeight();
         dc.DrawLabel(m_text_action, rc, wxALIGN_CENTER);
-
-        const wxRect progress_rc(0, c_sz.GetHeight() - m_progress_h, c_sz.GetWidth(), m_progress_h);
                 
         dc.SetPen(*wxTRANSPARENT_PEN);
         dc.SetBrush(wxBrush(m_progress_bg_color));
@@ -526,7 +567,7 @@ public:
         const int fill_width = progress_rc.GetWidth() * m_progress * 0.01;
         if (fill_width > 0) {
             dc.SetBrush(wxBrush(m_progress_fg_color));
-            dc.DrawRectangle(0, progress_rc.GetTop(), fill_width, m_progress_h);
+            dc.DrawRectangle(progress_rc.GetLeft(), progress_rc.GetTop(), fill_width, m_progress_h);
         }
     }
 
@@ -575,12 +616,16 @@ public:
 
 private:
     wxBitmap m_logo_bmp;
+    wxBitmap m_background_bmp;
     wxColour m_fg_color;
     wxColour m_bg_color;
     wxColour m_progress_bg_color;
     wxColour m_progress_fg_color;
 
-    wxString m_text_version = GUI_App::format_display_version();
+    // Build-time version; stable builds show only Version X.Y.Z.
+    wxString m_text_version = "Version " + wxString::FromUTF8(SoftFever_VERSION);
+    bool     m_show_commit  = std::string(SoftFever_VERSION).find('-') != std::string::npos;
+    wxString m_text_build   = "Commit " + wxString::FromUTF8(build_commit_hash);
     wxString m_text_action  = _L("Loading configuration") + dots;
     int      m_progress     = 0;
     int      m_progress_h   = 6;
