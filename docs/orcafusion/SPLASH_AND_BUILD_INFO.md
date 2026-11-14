@@ -1,8 +1,19 @@
 # OrcaFusion — splash screen and About/build information
 
+## Final approved splash artwork — LOCKED
+
+**The FIRST dramatic glowing OrcaFusion splash preview is the final visual design.**
+Use the first preview with the **wide horizontal OrcaFusion wordmark**, bright cyan/teal edge highlights, swooping teal underline, large black-and-white orca above stacked teal printing layers, atmospheric dark teal background, and illuminated hexagonal floor. The user explicitly rejected the **second/smoother animation preview's redesigned stacked "Orca / Fusion" logo**, because it lost the original design qualities.
+
+**Preserve the original logo artwork, proportions, lettering, orca shape, layer stack, teal sweep, colors and composition.** Future previews, assets and implemented animation must *not regenerate, simplify, reword, rearrange, or replace the brand mark*. The existing app/avatar branding remains unchanged; this decision is specific to the startup splash.
+
+**Animation:** Smooth, slow continuous pulse of the glow/halo around the ORIGINAL logo and wordmark only. Generate additional glow intensity/opacity frames or animate an overlay—not alternate logo drawings. Keep positions fixed. The loading bar and status remain real UI, not baked into background art. The old second preview is rejected as a design reference.
+
+**Asset status:** The first preview is approved as visual reference, but the isolated original glowing logo and background have **not yet** been committed as usable separate splash PNG assets. Extract/redraw from that exact first preview before integration, and verify the resulting art matches it; do not claim final asset integration is complete.
+
 ## Approved branding
 
-The dramatic dark-teal/glowing logo from the approved splash preview is preferred **for the splash screen only**. Preserve the previous standalone orca avatar for app/window/taskbar icons and the existing full logo for ordinary branding. The splash-only artwork is not yet uploaded as isolated, text-free layers. The generated preview has baked-in version/loading/progress text and must **not** be used directly behind live UI because that would duplicate information.
+The **first** dramatic dark-teal/glowing logo preview is the **final selected design for the splash screen only**. The second, smoother-animation preview's modified logo is not approved. Preserve the previous standalone orca avatar for app/window/taskbar icons and the existing full logo for ordinary branding. The splash-only artwork is not yet uploaded as isolated, text-free layers. The generated preview has baked-in version/loading/progress text and must **not** be used directly behind live UI because that would duplicate information.
 Use the **actual uploaded OrcaFusion artwork**, never a generic or AI-search substitute.
 - Full logo: `resources/orcafusion/branding/orcafusion-logo.png` (the approved black/teal orca plus stacked Orca/Fusion lettering)
 - App/avatar icon: `resources/orcafusion/branding/orcafusion-avatar.png`
@@ -22,7 +33,7 @@ Use the **actual uploaded OrcaFusion artwork**, never a generic or AI-search sub
 
 ### Asset separation
 - `resources/orcafusion/branding/orcafusion-splash-background.png`: future text-free background resembling the approved preview; no text or progress bar baked in.
-- `resources/orcafusion/branding/orcafusion-splash-logo.png`: future isolated version of **newer, glowing** OrcaFusion splash emblem/wordmark from approved preview, with transparency; used only on splash.
+- `resources/orcafusion/branding/orcafusion-splash-logo.png`: future isolated version of the **first, original glowing** OrcaFusion splash emblem/wordmark from the approved first preview, with transparency; used only on splash.
 - `resources/orcafusion/branding/orcafusion-logo.png`: existing approved logo, fallback until the two splash-specific assets exist.
 - `resources/orcafusion/branding/orcafusion-avatar.png` and `orcafusion.ico`: **unchanged**, for app/taskbar/installer icons.
 - Always show the actual approved **full OrcaFusion logo** (preserve aspect ratio and alpha). The logo already contains the name; **do not render a second `OrcaFusion` text heading beneath or beside it**.
