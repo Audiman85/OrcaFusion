@@ -1,3 +1,14 @@
+## Second test build — white Orca fix (November 14, 2026)
+
+- **Successful GitHub Actions run:** [Build all #43634139013](https://github.com/Audiman85/OrcaFusion/actions/runs/43634139013)
+- **Built commit:** `174da1e17fd0d14ca149f782e1bd0c4962111890`
+- **Workflow conclusion:** `success`; 50 jobs total, 29 successful and 21 skipped, no failed or cancelled jobs.
+- **Windows x64 build and unit tests:** `success`.
+- **Windows x64 portable artifact:** `OrcaSlicer_Windows_V2.6.0-dev_x64_portable`, artifact ID `14131579804`, about 203 MB compressed.
+- **Other Windows x64 artifacts:** regular archive `14132411801`, MSIX `14132591307`.
+- **Included source fix:** white, high-contrast orca segments in dark-mode SVGs; runtime fallback full-logo recolor of dark “Orca” text to off-white while preserving teal “Fusion” and the original orca artwork.
+- **Outstanding:** User must launch updated portable build and report whether dark-theme logo is legible and whether startup/slicing works. This is not the final approved glowing OrcaFusion splash artwork, which remains a separate uncompleted integration.
+
 # OrcaFusion — first Windows test build
 
 ## First real build results — November 14, 2026
