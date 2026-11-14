@@ -109,6 +109,8 @@
 #include <wx/timer.h>
 #include <wx/snglinst.h>
 #include <wx/image.h>
+#include <wx/graphics.h>
+#include <wx/timer.h>
 #include <wx/settings.h>
 #include <wx/font.h>
 #include <wx/platinfo.h>
@@ -512,8 +514,26 @@ public:
         }
 
         m_window->Bind(wxEVT_PAINT, &SplashScreen::OnPaint, this);
+        // The timer exists only while the splash is alive. 40 ms gives smooth
+        // 25 FPS glow without redrawing at the monitor refresh rate.
+        m_glow_timer.SetOwner(this);
+        Bind(wxEVT_TIMER, &SplashScreen::OnGlowTimer, this, m_glow_timer.GetId());
+        m_glow_timer.Start(40);
         m_window->Refresh();
         m_window->Update();
+    }
+
+    ~SplashScreen() override
+    {
+        m_glow_timer.Stop();
+    }
+
+    void OnGlowTimer(wxTimerEvent&)
+    {
+        // No image scaling or allocations on each frame: the original logo
+        // stays completely stationary, and the lightweight halo breathes.
+        if (m_window && m_window->IsShown())
+            m_window->Refresh(false);
     }
 
     void OnPaint(wxPaintEvent& evt)
@@ -528,6 +548,26 @@ public:
         if (m_logo_bmp.IsOk()) {
             const int x = (c_sz.GetWidth() - m_logo_bmp.GetWidth()) / 2;
             const int y = static_cast<int>(c_sz.GetHeight() * 0.08);
+            // A smooth, small-amplitude sinusoid changes only the teal halo,
+            // not the approved logo artwork or its position.
+            const auto elapsed = std::chrono::duration<double>(
+                std::chrono::steady_clock::now() - m_glow_start).count();
+            constexpr double tau = 6.283185307179586;
+            const double phase = 0.5 - 0.5 * std::cos(tau * elapsed / 2.5);
+            const unsigned char alpha = static_cast<unsigned char>(24.0 + 60.0 * phase);
+            std::unique_ptr<wxGraphicsContext> graphics(wxGraphicsContext::Create(dc));
+            if (graphics) {
+                const double cx = x + m_logo_bmp.GetWidth() / 2.0;
+                const double cy = y + m_logo_bmp.GetHeight() / 2.0;
+                const double radius = std::max(m_logo_bmp.GetWidth() * 0.48,
+                                               m_logo_bmp.GetHeight() * 0.62);
+                graphics->SetPen(*wxTRANSPARENT_PEN);
+                graphics->SetBrush(graphics->CreateRadialGradientBrush(
+                    cx, cy, cx, cy, radius,
+                    wxColour(27, 218, 203, alpha), wxColour(27, 218, 203, 0)));
+                graphics->DrawEllipse(cx - radius, cy - radius,
+                                      radius * 2.0, radius * 2.0);
+            }
             dc.DrawBitmap(m_logo_bmp, x, y, true);
         } else {
             dc.SetFont(m_font_version);
@@ -615,6 +655,8 @@ public:
     }
 
 private:
+    wxTimer m_glow_timer;
+    std::chrono::steady_clock::time_point m_glow_start = std::chrono::steady_clock::now();
     wxBitmap m_logo_bmp;
     wxBitmap m_background_bmp;
     wxColour m_fg_color;
