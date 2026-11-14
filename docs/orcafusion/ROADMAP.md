@@ -41,6 +41,17 @@ See [branding specification](./BRANDING.md) and [startup/build specification](./
 - [ ] Provide user controls to re-enable optional features without reinstalling where feasible
 - [ ] Test representative low-end hardware and all supported printers; never suggest Lite supports hardware that fails minimum OpenGL/OS/runtime requirements
 
+
+## Compatibility research — 32-bit Windows (experimental)
+- [ ] Evaluate feasibility of an **optional OrcaFusion Lite x86 (32-bit)** build; do not imply support until verified
+- [ ] Audit all build dependencies, vendor SDKs, native network plugins, WebView, graphics stack and Windows packaging for x86 availability
+- [ ] Prototype an isolated x86 build only after Full and 64-bit Lite are reliable; do not alter their release configurations
+- [ ] Benchmark realistic address-space limitations and memory pressure with larger FDM models and multicolor jobs
+- [ ] Confirm actual OS, CPU and OpenGL requirements; older machines may remain incompatible even if x86 binaries compile
+- [ ] Require equivalent G-code correctness and print safety before release, otherwise document unsupported hardware
+
+Current upstream OrcaSlicer Windows build flow explicitly supports **x64 and ARM64**, not x86; 32-bit is a research goal, not a promised edition.
+
 ## Future backlog
 - [ ] Custom theme editor (lower priority)
 - [ ] Resin slicing research only, excluded from initial FDM scope
