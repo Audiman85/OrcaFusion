@@ -12,6 +12,8 @@ Official OrcaSlicer fork renamed to `Audiman85/OrcaFusion`. Current source is an
   - [x] Windows executable resource now references `orcafusion.ico` and uses the OrcaFusion product name (commit `63910da`)
   - [ ] Verify Windows executable after compilation and continue with installer, splash and About visuals
 - [ ] Test logo readability in dark and light modes
+- [ ] Add gently pulsing teal glow to splash-only logo and wordmark (roughly 2.5 s cycle), with no layout movement; avoid continuous CPU/GPU-intensive redraws
+- [ ] Reduced-motion/disable-animation option and static fallback; progress and loading messages remain independent and truthful
 
 See [branding specification](./BRANDING.md) and [startup/build specification](./SPLASH_AND_BUILD_INFO.md).
 
@@ -29,6 +31,15 @@ See [branding specification](./BRANDING.md) and [startup/build specification](./
 - [ ] No Rinkhals, no bootloader changes, no required printer firmware modification
 - [ ] Expand to other brands using modular printer connection adapters
 - [ ] Integrate mature features from compatible open source slicing projects with correct licenses/credits
+
+## Milestone 4 — Performance and optional Lite installation profile
+- [ ] Benchmark cold start, memory consumption, interactive responsiveness and slicing speed on lower-end Windows hardware
+- [ ] Keep **Full** installation selected by default; offer **Lite** as an optional installer feature set, not a separate slicer engine
+- [ ] Preserve identical core geometry, profiles, G-code safety, slicing correctness, print quality and machine compatibility in Lite
+- [ ] Lite defaults: turn off splash animation, reduce costly live 3D preview effects/quality, limit background tasks, and disable optional online/dashboard integrations where practical
+- [ ] Use lazy loading/on-demand components and optional assets; identify costly dependencies with profiling before removal
+- [ ] Provide user controls to re-enable optional features without reinstalling where feasible
+- [ ] Test representative low-end hardware and all supported printers; never suggest Lite supports hardware that fails minimum OpenGL/OS/runtime requirements
 
 ## Future backlog
 - [ ] Custom theme editor (lower priority)
