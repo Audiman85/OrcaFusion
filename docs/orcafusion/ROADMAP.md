@@ -12,7 +12,8 @@ Official OrcaSlicer fork renamed to `Audiman85/OrcaFusion`. Current source is an
   - [x] Windows executable resource now references `orcafusion.ico` and uses the OrcaFusion product name (commit `63910da`)
   - [ ] Verify Windows executable after compilation and continue with installer, splash and About visuals
 - [ ] Test logo readability in dark and light modes
-- [ ] Add gently pulsing teal glow to splash-only logo and wordmark (roughly 2.5 s cycle), with no layout movement; avoid continuous CPU/GPU-intensive redraws
+- [x] Implement first timer-driven, stationary 2.5-second teal halo pulse in `src/slic3r/GUI/GUI_App.cpp` (commit `d014528`; compilation and appearance testing pending)
+- [ ] Refine glow against the final original splash-only artwork, profile CPU use, and validate smoothness
 - [ ] Reduced-motion/disable-animation option and static fallback; progress and loading messages remain independent and truthful
 
 See [branding specification](./BRANDING.md) and [startup/build specification](./SPLASH_AND_BUILD_INFO.md).
