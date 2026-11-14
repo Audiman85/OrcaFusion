@@ -9,6 +9,8 @@ Official OrcaSlicer fork renamed to `Audiman85/OrcaFusion`. Current source is an
 - [x] Add generated Windows `.ico` and size variants
 - [ ] Replace startup splash branding; display OrcaFusion version, build channel and build identifier sourced from the build system
 - [ ] Replace desktop app icons, installer and About page visuals while preserving upstream attributions
+  - [x] Windows executable resource now references `orcafusion.ico` and uses the OrcaFusion product name (commit `63910da`)
+  - [ ] Verify Windows executable after compilation and continue with installer, splash and About visuals
 - [ ] Test logo readability in dark and light modes
 
 See [branding specification](./BRANDING.md) and [startup/build specification](./SPLASH_AND_BUILD_INFO.md).
