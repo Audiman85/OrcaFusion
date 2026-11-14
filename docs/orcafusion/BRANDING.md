@@ -14,11 +14,11 @@ OrcaFusion is the working name for the cross-manufacturer FDM slicer fork.
 | Combined logo | `resources/orcafusion/branding/orcafusion-logo.png` | About dialog, startup/splash screen, website and documentation |
 | Standalone orca avatar | `resources/orcafusion/branding/orcafusion-avatar.png` | Main app icon, GitHub avatar, window/taskbar icon, shortcut |
 
-Source artwork is prepared in the conversation as PNGs and awaits binary upload to the destinations above. It has **not** yet been wired into app resources or a compiled build.
+Approved PNG artwork, resized icons (16–512 px), and `orcafusion.ico` have been uploaded to the paths above. They have **not** yet been wired into app resources or a compiled build.
 
 ## Implementation checklist
-- [ ] Commit the approved transparent PNG image files at the locations above.
-- [ ] Generate application-size icons (16, 24, 32, 48, 64, 128, 256 px) and an ICO file from the avatar master.
+- [x] Commit the approved transparent PNG image files at the locations above.
+- [x] Add application-size icons (16, 24, 32, 48, 64, 128, 256, 512 px) and an ICO file from the avatar master.
 - [ ] Audit existing OrcaSlicer branding/resource references before replacing any; preserve upstream license notices and attribution.
 - [ ] Add icon to Windows executable, taskbar, title bar, About window, splash/loading screen and installer.
 - [ ] Add the combined logo to the About dialog, first-run interface, app documentation and website.
