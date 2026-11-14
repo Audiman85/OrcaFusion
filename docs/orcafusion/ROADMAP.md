@@ -4,9 +4,9 @@
 Official OrcaSlicer fork renamed to `Audiman85/OrcaFusion`. Current source is an upstream fork; the tasks below are **not yet implemented**.
 
 ## Milestone 1 — Branding and launch identity
-- [ ] Add approved combined logo to `resources/orcafusion/branding/orcafusion-logo.png`
-- [ ] Add approved standalone avatar to `resources/orcafusion/branding/orcafusion-avatar.png`
-- [ ] Add generated Windows `.ico` and size variants
+- [x] Add approved combined logo to `resources/orcafusion/branding/orcafusion-logo.png`
+- [x] Add approved standalone avatar to `resources/orcafusion/branding/orcafusion-avatar.png`
+- [x] Add generated Windows `.ico` and size variants
 - [ ] Replace startup splash branding; display OrcaFusion version, build channel and build identifier sourced from the build system
 - [ ] Replace desktop app icons, installer and About page visuals while preserving upstream attributions
 - [ ] Test logo readability in dark and light modes
