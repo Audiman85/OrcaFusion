@@ -1,12 +1,29 @@
 # OrcaFusion — splash screen and About/build information
 
 ## Approved branding
+
+The dramatic dark-teal/glowing logo from the approved splash preview is preferred **for the splash screen only**. Preserve the previous standalone orca avatar for app/window/taskbar icons and the existing full logo for ordinary branding. The splash-only artwork is not yet uploaded as isolated, text-free layers. The generated preview has baked-in version/loading/progress text and must **not** be used directly behind live UI because that would duplicate information.
 Use the **actual uploaded OrcaFusion artwork**, never a generic or AI-search substitute.
 - Full logo: `resources/orcafusion/branding/orcafusion-logo.png` (the approved black/teal orca plus stacked Orca/Fusion lettering)
 - App/avatar icon: `resources/orcafusion/branding/orcafusion-avatar.png`
 - Windows icon: `resources/orcafusion/branding/orcafusion.ico`
 
 ## Splash screen (startup)
+
+### Locked layout, top to bottom
+1. Dark navy/black background with subtle teal lighting, futuristic teal glow, and understated lower-edge hexagonal/floor texture. Target desktop splash aspect ratio **16:9**, presently **720 × 405 DIP**.
+2. Centered, splash-only glowing orca+OrcaFusion art, proportional, not cropped; artwork includes the brand name so **no second app-name heading**.
+3. Version centered below art. Stable: `Version X.Y.Z` only; beta/development: semantic version with channel.
+4. Short Git commit (e.g. `Commit abc1234`) **for beta/development only**, never stable.
+5. Teal progress track and real progress percentage; progress is not a decorative animation or hardcoded fake value.
+6. Below the progress bar, dynamic initialization messages sourced from actual app startup phases (e.g. Loading configuration, Loading printer profiles, Initializing interface). No fixed timer or artificial wait.
+7. When the startup process is ready, close the splash automatically and show OrcaFusion.
+
+### Asset separation
+- `resources/orcafusion/branding/orcafusion-splash-background.png`: future text-free background resembling the approved preview; no text or progress bar baked in.
+- `resources/orcafusion/branding/orcafusion-splash-logo.png`: future isolated version of **newer, glowing** OrcaFusion splash emblem/wordmark from approved preview, with transparency; used only on splash.
+- `resources/orcafusion/branding/orcafusion-logo.png`: existing approved logo, fallback until the two splash-specific assets exist.
+- `resources/orcafusion/branding/orcafusion-avatar.png` and `orcafusion.ico`: **unchanged**, for app/taskbar/installer icons.
 - Always show the actual approved **full OrcaFusion logo** (preserve aspect ratio and alpha). The logo already contains the name; **do not render a second `OrcaFusion` text heading beneath or beside it**.
 - **Stable releases:** beneath the logo display **only the friendly version number**, e.g. `Version 1.0.0`. Do **not** show a duplicate app-name heading, channel, build number, commit SHA or build date on the splash.
 - **Development and beta releases:** display the semantic version with channel (e.g. `0.1.0-dev` or `0.9.0-beta.1`); optional concise build identifier for internal builds.
@@ -37,11 +54,13 @@ Provide a **Copy build details** action for diagnostics. Include the full versio
 - [x] Windows resource script points to OrcaFusion icon and product description
 - [x] Locate upstream splash source: `src/slic3r/GUI/GUI_App.cpp`, `SplashScreen`
 - [x] Locate upstream About source: `src/slic3r/GUI/AboutDialog.cpp`
-- [ ] Wire full approved PNG into actual splash renderer
-- [ ] Implement channel-specific splash version visibility
+- [x] Source splash renderer reads `orcafusion-splash-logo.png` when available, falling back to approved `orcafusion-logo.png`; optional background supported
+- [ ] Upload isolated splash-specific glowing logo and text-free background from chosen preview
+- [x] Splash uses build-time version and hides commit on non-prerelease versions; short commit shown for prerelease builds
+- [ ] Introduce OrcaFusion-specific version/channel (currently based on upstream `SoftFever_VERSION`)
 - [ ] Generate build number and timestamp in CI/CMake and expose to C++
 - [ ] Implement all About fields and copy-details action
 - [ ] Validate light/dark themes, screen scaling, startup performance, packaging
 - [ ] Compile and validate a real Windows build
 
-**Implementation status:** branding sources uploaded and Windows executable-resource references changed; splash and About specifications updated here, but these runtime features are not yet implemented or compiled.
+**Implementation status:** initial splash rendering logic has been changed in `src/slic3r/GUI/GUI_App.cpp` (commit `8eb6ed7`), but **not compiled or tested**. The extra splash-only artwork still needs to be isolated and committed, and the About dialog/CI metadata pipeline is not yet updated.
