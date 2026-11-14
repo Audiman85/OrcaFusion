@@ -7,15 +7,15 @@ Use the **actual uploaded OrcaFusion artwork**, never a generic or AI-search sub
 - Windows icon: `resources/orcafusion/branding/orcafusion.ico`
 
 ## Splash screen (startup)
-- Always show the actual approved **full OrcaFusion logo** (preserve aspect ratio and alpha).
-- **Stable releases:** display **only the friendly version number**, e.g. `Version 1.0.0`. Do **not** show channel, build number, commit SHA or build date on the splash.
+- Always show the actual approved **full OrcaFusion logo** (preserve aspect ratio and alpha). The logo already contains the name; **do not render a second `OrcaFusion` text heading beneath or beside it**.
+- **Stable releases:** beneath the logo display **only the friendly version number**, e.g. `Version 1.0.0`. Do **not** show a duplicate app-name heading, channel, build number, commit SHA or build date on the splash.
 - **Development and beta releases:** display the semantic version with channel (e.g. `0.1.0-dev` or `0.9.0-beta.1`); optional concise build identifier for internal builds.
 - Continue the existing progress/loading indication. No artificial delay.
 - Keep labels and imagery visible on dark and light themes, including 125–200% Windows DPI and 1366x768 displays.
 - If the logo cannot be loaded, show plain OrcaFusion text instead of a blank/crashing window.
 
 ## Help → About OrcaFusion (all release channels)
-The About dialog **always shows** these fields, including on stable releases:
+The About dialog **always shows** these fields, including on stable releases. Use the logo itself as the visible brand heading and do not duplicate the application name as a second large heading; the formal app name can remain in the information/details fields:
 1. Application name: **OrcaFusion**
 2. App version: e.g. `1.0.0`
 3. Release channel: `Stable`, `Beta` or `Development`
