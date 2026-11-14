@@ -499,9 +499,29 @@ public:
         // The splash-only emblem is optional; use the approved application logo
         // as fallback. Never display an unrelated or generated replacement.
         wxImage logo_image(branding_dir + "orcafusion-splash-logo.png", wxBITMAP_TYPE_PNG);
-        if (!logo_image.IsOk())
+        bool using_fallback_logo = !logo_image.IsOk();
+        if (using_fallback_logo)
             logo_image.LoadFile(branding_dir + "orcafusion-logo.png", wxBITMAP_TYPE_PNG);
         if (logo_image.IsOk()) {
+            // The legacy transparent OrcaFusion wordmark has nearly black
+            // "Orca" lettering, invisible on our dark splash background.
+            // Brighten ONLY that word (roughly the right-hand upper third)
+            // while preserving its antialiasing, the orca drawing and the
+            // original teal "Fusion" lettering. Do not recolor the final
+            // splash-only artwork when its separate asset is available.
+            if (using_fallback_logo && logo_image.HasAlpha()) {
+                const int w = logo_image.GetWidth();
+                const int h = logo_image.GetHeight();
+                for (int y = static_cast<int>(h * 0.28); y < static_cast<int>(h * 0.55); ++y) {
+                    for (int x = static_cast<int>(w * 0.45); x < w; ++x) {
+                        if (logo_image.GetAlpha(x, y) > 0 &&
+                            logo_image.GetRed(x, y) < 70 &&
+                            logo_image.GetGreen(x, y) < 85 &&
+                            logo_image.GetBlue(x, y) < 95)
+                            logo_image.SetRGB(x, y, 242, 249, 250);
+                    }
+                }
+            }
             const double max_width  = sz.GetWidth() * 0.80;
             const double max_height = sz.GetHeight() * 0.53;
             const double scale = std::min(max_width / logo_image.GetWidth(),
