@@ -22,6 +22,12 @@ The near-black orca fills have been replaced with high-contrast whites, with the
 
 A new Windows build is required before these revised SVGs can be tested. Existing downloaded portable builds **will not update themselves**. The currently implemented OrcaFusion splash renderer separately loads `resources/orcafusion/branding/orcafusion-logo.png` until the approved isolated splash-only assets are packaged; do not misrepresent this SVG fix as completion of the final OrcaFusion splash.
 
+## Dark-background logo contrast fix (first Windows feedback)
+- The existing transparent full-logo fallback `resources/orcafusion/branding/orcafusion-logo.png` uses **dark “Orca” text** above the teal “Fusion” word, which is difficult to read on the splash's nearly black background.
+- The first Windows x64 test user requested **white “Orca” lettering**. The splash renderer now changes only the dark pixels in the known “Orca” text region to an off-white shade during fallback PNG loading; the original illustration, transparent background, and teal “Fusion” lettering remain unchanged. Runtime fix commit: `174da1e`. This is deliberately not applied to the final splash-only logo if/when provided.
+- The legacy `resources/images/splash_logo_dark.svg` also has its formerly dark orca silhouette paths changed to white, committed as `d365246` for contrast wherever that SVG is used.
+- **Validation pending**: confirm actual startup appearance in a new Windows x64 build, avoid image artifacts, and verify the original glowing splash-specific logo remains the ultimate design target. Source changes alone do not establish visual/runtime success.
+
 ## Approved branding
 
 The **first** dramatic dark-teal/glowing logo preview is the **final selected design for the splash screen only**. The second, smoother-animation preview's modified logo is not approved. Preserve the previous standalone orca avatar for app/window/taskbar icons and the existing full logo for ordinary branding. The splash-only artwork is not yet uploaded as isolated, text-free layers. The generated preview has baked-in version/loading/progress text and must **not** be used directly behind live UI because that would duplicate information.
