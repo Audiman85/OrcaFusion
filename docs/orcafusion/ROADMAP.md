@@ -52,6 +52,32 @@ See [branding specification](./BRANDING.md) and [startup/build specification](./
 
 Current upstream OrcaSlicer Windows build flow explicitly supports **x64 and ARM64**, not x86; 32-bit is a research goal, not a promised edition.
 
+## Milestone 5 — Browser-based OrcaFusion (after validated desktop foundation)
+- [ ] Architect a shared slicing service around the existing OrcaFusion engine; use a secure queued server-side slicing option first rather than claiming the C++ GUI will run directly in-browser
+- [ ] Browser app: upload STL/3MF, manage profiles, lightweight model inspection, submit remote slice, review/download G-code and transfer to compatible printers
+- [ ] Separate slicing and rendering workloads, enforce upload/compute quotas and isolate untrusted models
+- [ ] Preserve printer-specific safety checks and explicit confirmation for remote control/printing
+- [ ] Verify browser support on legacy operating systems; avoid guaranteeing that unsupported legacy browsers can connect securely
+
+## Milestone 6 — Android / iOS / iPadOS OrcaFusion Mobile
+- [ ] Dedicated branded mobile applications using a shared service/API and mobile-optimized interface
+- [ ] First features: printer discovery/monitoring where protocols permit, print files, profiles, status and lightweight 3D preview
+- [ ] Integrate remote slicing via OrcaFusion Web backend; evaluate limited on-device slicing separately on sufficiently capable hardware
+- [ ] Test Android/iOS platform store distribution, accessibility, network/privacy permissions and printer compatibility
+- [ ] Device capabilities precheck: OS/CPU architecture, available RAM/storage, graphics APIs, required networking, performance class
+- [ ] Publish min/recommended specifications; use Android Play device filters and exclusions, Apple deployment targets, plus in-app diagnostic details
+- [ ] Explain unsupported features and offer remote/web mode rather than pretending a device is fully supported
+- [ ] Avoid claiming first-ever smartphone slicer without comparing existing products
+
+## Milestone 7 — Unified support and system compatibility
+- [ ] Full installer remains default; Lite is opt-in, preserving core slicing correctness and compatible printer output
+- [ ] Windows installer preflight: OS/CPU bitness, graphics (OpenGL), RAM, disk space; never silently allow an incompatible install
+- [ ] Define and measure startup time, peak RAM, preview performance, and slicing speed on real low-spec targets
+- [ ] Audit legacy Dell Inspiron E1505/6400 configurations separately (Core Duo vs Core 2 Duo, GPU, installed OS)
+- [ ] An experimental native Windows x86 edition only if dependencies and end-to-end safety tests pass; Web remains fallback
+- [ ] Phone/tablet installation and first-run capability detection; default to remote slicing on underpowered devices
+- [ ] Keep a clear capability matrix for local slice / remote slice / monitoring / printer upload, rather than one broad compatible label
+
 ## Future backlog
 - [ ] Custom theme editor (lower priority)
 - [ ] Resin slicing research only, excluded from initial FDM scope
