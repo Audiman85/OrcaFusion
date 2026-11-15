@@ -89,11 +89,16 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
+          # Use the upstream release commit: forks may not carry upstream tags.
+          # This is OrcaSlicer v2.4.2, the baseline used to migrate older presets.
+          baseline=8500fcdccaa10b5099ac20d252af3a7c560046f1
           base="${{ runner.temp }}/v2.4.2"
-          git fetch --no-tags --depth=1 origin refs/tags/v2.4.2:refs/tags/v2.4.2
-          mkdir -p "$base"
-          git archive v2.4.2 resources/profiles | tar -x -C "$base"
-          python3 ./scripts/orca_profile_tool.py legacy-compat --base "$base/resources/profiles" --check 2>&1 | tee ${{ runner.temp }}/legacy_compat.log
+          {
+            git fetch --no-tags --depth=1 https://github.com/OrcaSlicer/OrcaSlicer.git "$baseline" &&
+            mkdir -p "$base" &&
+            { git archive "$baseline" resources/profiles | tar -x -C "$base"; } &&
+            python3 ./scripts/orca_profile_tool.py legacy-compat --base "$base/resources/profiles" --check
+          } 2>&1 | tee ${{ runner.temp }}/legacy_compat.log
 
       # download
       - name: Download
