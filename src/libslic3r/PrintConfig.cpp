@@ -4491,7 +4491,7 @@ void PrintConfigDef::init_fff_params()
     def->enum_labels.push_back(L("Stainless steel"));
     def->enum_labels.push_back(L("Tungsten carbide"));
     def->enum_labels.push_back(L("Brass"));
-    def->mode = comAdvanced;
+    def->mode = comSimple;
     def->nullable = true;
     def->set_default_value(new ConfigOptionEnumsGenericNullable({ ntUndefine }));
 
